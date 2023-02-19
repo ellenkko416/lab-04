@@ -1,3 +1,6 @@
+#Ellen Ko
+#https://github.com/ellenkko416/lab-04
+
 """EE 250L Lab 04 Starter Code
 Run vm_pub.py in a separate terminal on your VM."""
 
@@ -14,10 +17,15 @@ def on_connect(client, userdata, flags, rc):
 
     print("Connected to server (i.e., broker) with result code "+str(rc))
     #replace user with your USC username in all subscriptions
-    client.subscribe("user/ipinfo")
+    client.subscribe("keko/ipinfo")
+    client.subscribe("keko/date")
+    client.subscribe("keko/time")
     
     #Add the custom callbacks by indicating the topic and the name of the callback handle
-    client.message_callback_add("user/ipinfo", on_message_from_ipinfo)
+    client.message_callback_add("keko/ipinfo", on_message_from_ipinfo)
+    client.message_callback_add("keko/date", on_message_from_date)
+    client.message_callback_add("keko/time", on_message)
+    
 
 
 """This object (functions are objects!) serves as the default callback for 
@@ -25,11 +33,18 @@ messages received when another node publishes a message this client is
 subscribed to. By "default,"" we mean that this callback is called if a custom 
 callback has not been registered using paho-mqtt's message_callback_add()."""
 def on_message(client, userdata, msg):
-    print("Default callback - topic: " + msg.topic + "   msg: " + str(msg.payload, "utf-8"))
+   print("Default callback - topic: " + msg.topic + "   msg: " + str(msg.payload, "utf-8"))
 
 #Custom message callback.
 def on_message_from_ipinfo(client, userdata, message):
    print("Custom callback  - IP Message: "+message.payload.decode())
+   
+def on_message_from_date(client, userdata, message):
+   print("Custom callback  - Date: "+message.payload.decode())
+   
+   
+   
+   
 
 
 
@@ -42,6 +57,7 @@ if __name__ == '__main__':
     client.on_message = on_message
     #attach the on_connect() callback function defined above to the mqtt client
     client.on_connect = on_connect
+    
 
     """Connect using the following hostname, port, and keepalive interval (in 
     seconds). We added "host=", "port=", and "keepalive=" for illustrative 
