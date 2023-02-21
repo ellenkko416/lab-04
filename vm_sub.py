@@ -24,7 +24,7 @@ def on_connect(client, userdata, flags, rc):
     #Add the custom callbacks by indicating the topic and the name of the callback handle
     client.message_callback_add("keko/ipinfo", on_message_from_ipinfo)
     client.message_callback_add("keko/date", on_message_from_date)
-    client.message_callback_add("keko/time", on_message)
+    client.message_callback_add("keko/time", on_message_from_time)
     
 
 
@@ -42,11 +42,10 @@ def on_message_from_ipinfo(client, userdata, message):
 def on_message_from_date(client, userdata, message):
    print("Custom callback  - Date: "+message.payload.decode())
    
+def on_message_from_time(client, userdata, message):
+   print("Custom callback  - Time: "+message.payload.decode())
    
    
-   
-
-
 
 
 if __name__ == '__main__':
